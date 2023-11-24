@@ -12,7 +12,6 @@
 #define EXIT_MALLOC_ERROR(buffer) \
 { \
 	free(buffer); \
-	write(1, "Malloc returned a NULL ptr\n", 27); \
 	return (-1); \
 }
 
@@ -24,9 +23,10 @@
 	return ; \
 }
 
-// from file IOutils.c
+// from file utils.c
 
 char	*ft_scanf(void);
+void	ft_putstr(char *s);
 
 // from file fileparsing.c
 
