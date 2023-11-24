@@ -1,7 +1,7 @@
 all: narwhal
 
 narwhal:
-	cc -g challenge.c ft_scanf.c fileparsing.c -o narwhal
+	cc -g challenge.c utils.c fileparsing.c -o narwhal
 
 fclean:
 	rm -f narwhal
