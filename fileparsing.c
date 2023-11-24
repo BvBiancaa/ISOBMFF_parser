@@ -115,13 +115,13 @@ void process_sub_boxes(FILE *file, int32_t box_size, int ind)
 			printf("	");
 		printf("Box ID: %s ", sub_box_name);
 		printf("of size: %u\n", sub_box_size);
-		if (strcmp(sub_box_name, "moof") == 0 || strcmp(sub_box_name, "traf") == 0)
+		if (ft_strcmp(sub_box_name, "moof") == 0 || ft_strcmp(sub_box_name, "traf") == 0)
         		process_sub_boxes(file, sub_box_size, ind + 1);
 		if (sub_box_size >= 8)
             	fseek(file, sub_box_size - 8, SEEK_CUR);
 		else
 		{
-			printf("Invalid box size\n");
+			ft_putstr("Invalid box size\n");
 			return;
 		}
 		box_size -= sub_box_size;
@@ -156,13 +156,13 @@ void	file_parser(char *filename)
 		printf("Box ID: %s ", name);
 		printf("of size: %u\n", box_size);
 		//PARSE ITS SUB BOXES OR CONTENT OR JUST GO ON
-		if (strcmp(name, "moof") == 0 || strcmp(name, "traf") == 0)
+		if (ft_strcmp(name, "moof") == 0 || ft_strcmp(name, "traf") == 0)
 		{
 			long start = ftell(file);
         		process_sub_boxes(file, box_size, 1);
 			fseek(file, start, SEEK_SET);
 		}
-		if (strcmp(name, "mdat") == 0)
+		if (ft_strcmp(name, "mdat") == 0)
 			fseek(file, process_mdat(filename), SEEK_SET);
 		else if (box_size >= 8)
             	fseek(file, box_size - 8, SEEK_CUR);
