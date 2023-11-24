@@ -27,6 +27,7 @@
 
 char	*ft_scanf(void);
 void	ft_putstr(char *s);
+int	ft_strcmp(char *s1, char *s2);
 
 // from file fileparsing.c
 
