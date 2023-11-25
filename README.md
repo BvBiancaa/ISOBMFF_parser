@@ -4,7 +4,7 @@
 TO DO:
 
 - comments & README
-- bonus 1 & 2
+- bonus 1
 - compile on all operating systems
 - optimize code and readability
 - implement my functions
