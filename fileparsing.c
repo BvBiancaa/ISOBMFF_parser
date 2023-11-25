@@ -4,7 +4,11 @@ unsigned char *base64_decode(const char *data, size_t input_length, size_t *outp
 {
 	unsigned char *decoded_data;
 	uint32_t triple;
+	size_t	i;
+	size_t	j;
 
+	i = 0;
+	j = 0;
 	if (input_length % 4 != 0)
 		return NULL;
 	if (data[input_length - 1] == '=') (*output_length)--;
@@ -12,7 +16,7 @@ unsigned char *base64_decode(const char *data, size_t input_length, size_t *outp
 	decoded_data = malloc(*output_length + 2);
 	if (decoded_data == NULL)
 		return NULL;
-	for (int i = 0, j = 0; i < input_length;)
+	while (i < input_length)
 	{
 		triple = (decoding_table[(unsigned char)data[i++]] << 3 * 6) + (decoding_table[(unsigned char)data[i++]] << 2 * 6) + (decoding_table[(unsigned char)data[i++]] << 1 * 6) + (decoding_table[(unsigned char)data[i++]] << 0 * 6);
 		decoded_data[j++] = (triple >> 2 * 8) & 0xFF;
@@ -28,10 +32,10 @@ unsigned char *base64_decode(const char *data, size_t input_length, size_t *outp
 //The function then iterates through the input data, and converts each group of four Base64 characters into a 24-bit triple and then splitting this triple into three 8-bit values.
 //Returns a pointer to the allocated memory containing the decoded data.
 
-void save_metadata_to_file(const char *base_64_data, const char *filename, FILE *file, int decoding_table[256])
+void save_metadata_to_file(const char *base_64_data, FILE *file, int decoding_table[256])
 {
 	size_t decoded_size = strlen(base_64_data) * 3 / 4;
-	char *decoded;
+	unsigned char *decoded;
 	
 	decoded = base64_decode(base_64_data, strlen(base_64_data), &decoded_size, decoding_table);
 	if (decoded == NULL)
@@ -48,13 +52,13 @@ void save_metadata_to_file(const char *base_64_data, const char *filename, FILE 
 void	check_metadat(char *metadata, int decoding_table[256])
 {
 	FILE *file;
-	size_t	i;
-	size_t	start;
+	ssize_t	i;
+	ssize_t	start;
 	char		*filename;
 	char		*encoded_file;
 
 	start = ft_strstr(metadata, "<smpte:image xml:id=\"") + 1;
-	if (start == -1 || i < 0)
+	if (start == -1)
 		return (ft_putstr("Metadata malformed\n"));
 	filename = malloc(alloc_count(start, metadata) + 2);
 	if (!filename)
@@ -81,7 +85,7 @@ void	check_metadat(char *metadata, int decoding_table[256])
 		i++;
 	}
 	encoded_file[i] = '\0';
-	save_metadata_to_file(encoded_file, filename, file, decoding_table);
+	save_metadata_to_file(encoded_file, file, decoding_table);
 	free(filename);
 	free(encoded_file);
 	fclose(file);
