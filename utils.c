@@ -1,55 +1,61 @@
 #include "includes/challenge.h"
 
-// I had fun reimplementing some functions, I had never used a FILE* variable and since I liked this project a lot I will probably try reimplementing that as well
-
-char	*ft_scanf(void)
+int32_t	swap_endianness(int32_t value)
 {
-	int	index;
-	int	c;
-	char	*ret;
-
-	index = -1;
-	ret = NULL;
-	while (++index >= 0)
-	{
-		ret = (char *)realloc(ret, (index + 1) * sizeof(char));
-		if (ret == NULL || !ret)
-			return (NULL);
-		c = getc(stdin);
-		if (c == '\n' || c == EOF)
-			break;
-		else
-			ret[index] = c;
-	}
-	ret[index] = '\0';
-	return (ret);
+    	return ((value >> 24) & 0x000000FF) | ((value >> 8)  & 0x0000FF00) | ((value << 8)  & 0x00FF0000) | ((value << 24) & 0xFF000000);
 }
 
-//scanf reimplementation
-//the function loops (i could have written while (1) but i saved a line putting ++index there, I come from 42 so saving a line is A LOT).
-//basically the function waits to take as input a char written on the stdin (fd = 0) and when it gets a newline as input is stops, ends the line with the \0 and returns the string
-//it reallocs every char so better get your argv right. 
+//the function is designed to swap the endianness of a 32-bit integer.
+//the first value goes from pos 0 to pos 3 (shifted of 24 bits), the second goes from pos 1 to pos 2, the third goes from pos 2 to pos 1 and the last one goes from pos 3 to pos 0.
 
-void	ft_putstr(char *s)
+int	is_file_valid(char *filename)
 {
-	int	index;
+	FILE *check;
 
-	index = -1;
-	while (s[++index])
-		write(1, &s[index], 1);
+	check = fopen(filename, "r");
+	if (check == NULL)
+		return (1);
+	else
+        	fclose(check);
+	return (0);
 }
 
-//little putstr
+//it opens the file, if there are errors the file is not valid, else it closes it and returns 0.
 
-int	ft_strcmp(char *s1, char *s2)
+size_t	alloc_count(size_t start, char *metadata)
 {
-	unsigned int	i;
+	size_t	i;
+	size_t	count;
 
 	i = 0;
-	while (s1[i] == s2[i] && s1[i])
+	count = 0;
+	while (metadata[start + i] != '"' && metadata[start + i])
 		i++;
-	return (s1[i] - s2[i]);
+	start = ft_strstr(metadata, "imagetype=\"") + 1;
+	while (metadata[start + count] != '"' && metadata[start + count])
+		count++;
+	return (count + i);
 }
 
-//strcmp reimplementation, not really protected but enough for its scope in the code
-//the function iterates the two strings, when it finds they have at i position two different characters it returns the difference between the two.
+//the function counts how many bytes the filename needs.
+//it looks for the image id and counts how many characters it contains and does the same for the file type, returning the sum of the two numbers
+
+void	find_filename(char *filename, char *metadata, size_t start, size_t index)
+{
+	while (metadata[start + index] != '"' && metadata[start + index])
+	{
+		filename[index] = metadata[start + index];
+		index++;
+	}
+	filename[index] = '.';
+	start = ft_strstr(metadata, "imagetype=\"") - index + 1;
+	while (metadata[start + index] != '"' && metadata[start + index])
+	{
+		filename[index + 1] = metadata[start + index];
+		index++;
+	}
+	filename[index + 1] = '\0';
+}
+
+//the function finds the image id and the file type and puts them in the filename string, terminating it with a '\0' character 
+

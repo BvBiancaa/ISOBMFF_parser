@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
   	return (0);
 }
 
-//I love argc and argv, unfortunately for a person that has never used a program it's difficult to guess the argument before startting the program
+//I love argc and argv, unfortunately for a person that has never used a program it's difficult to guess the argument before starting the program
 //so there's argc and argv for people that used the program already (probably will not happen).
 //the program checks if argc is more than one, so if the user did type the filename (or something random) and checks if it exists, if it does it just executes the program.
 //If the argument is invalid or argc is 1, until the user inserts a valid parameter or enter to exit. it then parses the file and frees the buffer.
