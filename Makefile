@@ -1,11 +1,18 @@
-all: narwhal
+NAME = narwhal
 
-narwhal:
-	cc -g challenge.c utils.c function_impl.c fileparsing.c -o narwhal
+all: {NAME}
+
+{NAME}:
+	cc -g challenge.c fileparsing.c function_impl.c utils.c -o narwhal
+	@clear
+	@echo "compiled"
+	@echo "usage: ./narwhal /path_to_file/file_name or just ./narwhal"
 
 fclean:
 	rm -f narwhal
+	@clear
+	@echo "executable removed"
 
-re: fclean narwhal
+re: fclean {NAME}
 
 .PHONY: all, re
