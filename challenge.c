@@ -29,3 +29,4 @@ int	main(int argc, char **argv, char **env)
 //so there's argc and argv for people that used the program already (probably will not happen).
 //the program checks if argc is more than one, so if the user did type the filename (or something random) and checks if it exists, if it does it just executes the program.
 //If the argument is invalid or argc is 1, until the user inserts a valid parameter or enter to exit. it then parses the file and frees the buffer.
+//the main also takes the **env as input to check if the user wants to save the files.
