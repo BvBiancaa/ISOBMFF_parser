@@ -14,7 +14,12 @@ All'interno di MDAT, ho trovato i metadati delle immagini codificate. Li ho sepa
 
 
 ### COME FAR PARTIRE IL PROGRAMMA
+
+Se vuoi che il programma scarichi i file esegui anche il comando export.
+Se non settato o con un valore diverso da 1, il programma non scaricherà i file.
+
 ```
+export SAVE_FILE_=1
 make
 ./narwhal text0.mp4
 oppure
@@ -50,7 +55,12 @@ I started by reading the file and printing the size and name of each box. Once t
 Within MDAT, I found the metadata of the encoded images. I separated them from the rest of the content, converted them, and saved them in files with names indicated in the metadata itself.
 
 ### HOW TO RUN THE PROGRAM
+
+If you want the program to download the files execute the export command as shown.
+If not set or not equal to 1, the program won't download the files.
+
 ```
+export SAVE_FILE_=1
 make
 ./narwhal text0.mp4
 or
