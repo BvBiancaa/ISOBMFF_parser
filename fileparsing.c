@@ -158,7 +158,7 @@ void	print_s(const char *s, char *modify)
 //It then increments the main loop index (i) by the number of bytes read and writes the calculated Unicode code point to the standard output. 
 //If an invalid UTF-8 sequence or continuation byte is encountered, it prints an error message and breaks out of the loop.
 
-long	process_mdat(char *filename, int32_t size)
+long	process_mdat(char *filename, int32_t size, ssize_t save)
 {
 	FILE *file = fopen(filename, "r");
 	char line[4096];
@@ -178,9 +178,12 @@ long	process_mdat(char *filename, int32_t size)
 	     	print_s(line, metadata);
 	metadata[size - 1] = '\0';
 	ret = ftell(file);
-      for (int i = 0; i < 64; i++)
-            decoding_table[(unsigned char) "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[i]] = i;
-	check_metadat(metadata, decoding_table);
+	if (save == 1)
+	{
+      	for (int i = 0; i < 64; i++)
+      	      decoding_table[(unsigned char) "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[i]] = i;
+		check_metadat(metadata, decoding_table);
+	}
 	free(metadata);
 	fclose(file);
     	return (ret);
@@ -220,7 +223,7 @@ void process_sub_boxes(FILE *file, int32_t box_size, int ind)
 	}
 }
 
-void	file_parser(char *filename)
+void	file_parser(char *filename, char **env)
 {
 	int32_t	box_size;
 	char	name[5] = {0};
@@ -257,7 +260,7 @@ void	file_parser(char *filename)
 		}
 		if (ft_strcmp(name, "mdat") == 0)
 		{
-			position = process_mdat(filename, box_size - 8);
+			position = process_mdat(filename, box_size - 8, ft_getenv("SAVE_FILE_", env));
 			if (position == -1)
 				return ;
 			fseek(file, position, SEEK_SET);

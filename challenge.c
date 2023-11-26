@@ -1,13 +1,13 @@
 #include "includes/challenge.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
 	char	*buffer;
 
 	if (argc > 1)
 		if (is_file_valid(argv[1]) == 0)
 		{
-			file_parser(argv[1]);
+			file_parser(argv[1], env);
 			return (0);
 		}
 	buffer = NULL;
@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 		if (is_file_valid(buffer) == 0)
 			break ;
 	}
-	file_parser(buffer);
+	file_parser(buffer, env);
 	free(buffer);
   	return (0);
 }

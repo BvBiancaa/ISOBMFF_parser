@@ -29,11 +29,13 @@ char	*ft_scanf(void);
 void	ft_putstr(char *s);
 int	ft_strcmp(char *s1, char *s2);
 int	ft_strstr(const char *haystack, const char *needle);
+ssize_t	ft_atoi(char const *str);
+int	ft_getenv(const char *s, char **env);
 
 // from file fileparsing.c
 
 int	is_file_valid(char *filename);
-void	file_parser(char *filename);
+void	file_parser(char *filename, char **env);
 
 //from file utils.c
 

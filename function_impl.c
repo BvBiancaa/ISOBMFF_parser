@@ -81,3 +81,71 @@ int	ft_strstr(const char *haystack, const char *needle)
 }
 
 //a modified version of strstr, it returns the position of the last character of the string the function has to find. 
+
+int	find_str(const char *s, const char *s1)
+{
+	int i = 0;
+	for (; s[i] && s1[i] && s[i] == s1[i]; i++)
+		;
+	if (s[i] == '\0' && s1[i] == '=')
+		return (i + 1);
+	return (-1);
+}
+
+//finds where the value of the requested env is.
+
+int	ft_getenv(const char *s, char **env)
+{
+	char	*ret;
+	ssize_t	index;
+	
+	index = 0;
+	ret = NULL;
+	for (ssize_t i = 0; env[i]; i++)
+	{
+		index = find_str(s, env[i]);
+		if (index > 0 && (size_t)index <= strlen(env[i]))
+		{
+			ret = env[i] + index;
+			index = i;
+			break ;
+		}
+	}
+	return (ft_atoi(ret));
+}
+
+//getenv reimplementation, the function takes the string and the env variable,
+//it loops the env variable until it finds the string, it then returns the number after the string.
+
+ssize_t	ft_atoi(char const *str)
+{
+	int	i;
+	int	sign;
+	ssize_t	res;
+
+	i = 0;
+	sign = 1;
+	res = 0;
+	if (str == NULL)
+		return (0);
+	while ((str[i] <= 13 && str[i] >= 9) || str[i] == 32)
+		i++;
+	if (str[i] == 43 || str[i] == 45)
+	{
+		if (str[i] == 45)
+			sign *= -1;
+		i++;
+	}
+	while (str[i] >= 48 && str[i] <= 57)
+	{
+		res = res * 10 + (str[i] - 48);
+		i++;
+	}
+	return (res * sign);
+}
+
+//atoi reimplementation, the function takes a string, removes the leading white spaces, check if there's a sign
+//if a sign is found and it's a minus the sign becomes -1, else it just goes on.
+//it iterates the string until it containes 0 - 9 ascii characters taking the number, multiplying it for 10
+//(it's "shifting" the number position) and adding the number it just processed turining it in a number.
+//the function then returns the number * sign.
