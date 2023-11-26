@@ -23,7 +23,7 @@ oppure
 
 ### TO DO
 
-- [ ] Bonus 1
+- [x] Bonus 1
 - [x] Bonus 2
 - [ ] Compilare su tutti i sistemi operativi
 - [ ] Ottimizzare il codice
@@ -59,7 +59,7 @@ or
 
 ### TO DO
 
-- [ ] Bonus 1
+- [x] Bonus 1
 - [x] Bonus 2
 - [ ] Compile on all operating systems
 - [ ] Optimize the code
